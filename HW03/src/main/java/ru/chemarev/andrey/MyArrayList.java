@@ -158,13 +158,7 @@ public class MyArrayList<T> implements List<T> {
         for (int i = 0; i < currentPosition - 1; i++) {
             boolean isSorted = true;
 
-            if ( array[i] == null )
-                continue;
-
             for (int j = i + 1; j < currentPosition; j++) {
-
-                if ( array[j] == null )
-                    continue;
 
                 if (c.compare((T) array[i], (T) array[j]) == 1) {
                     Object o = array[i];
