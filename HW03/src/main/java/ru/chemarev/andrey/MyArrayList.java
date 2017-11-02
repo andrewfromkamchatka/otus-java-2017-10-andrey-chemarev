@@ -13,12 +13,12 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public int size() {
-        return elementsCounter;
+        return currentPosition;
     }
 
     @Override
     public boolean isEmpty() {
-        return elementsCounter == 0;
+        return currentPosition == 0;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class MyArrayList<T> implements List<T> {
     @Override
     public boolean add(T t) {
 
-        if ( elementsCounter == array.length )
+        if ( currentPosition == array.length )
             if (array.length + STEP > Integer.MAX_VALUE)
                 return false;
             else
@@ -52,7 +52,6 @@ public class MyArrayList<T> implements List<T> {
 
         array[currentPosition] = t;
         currentPosition++;
-        elementsCounter++;
 
         return true;
     }
@@ -63,7 +62,7 @@ public class MyArrayList<T> implements List<T> {
             if ( o.equals(array[i]) ) {
                 System.arraycopy(array, i+1, array, i, currentPosition-i-1);
                 array[currentPosition-1] = null;
-                elementsCounter--;
+                currentPosition--;
                 return true;
             }
 
@@ -182,6 +181,5 @@ public class MyArrayList<T> implements List<T> {
 
     private Object[] array;
     private int currentPosition = 0;
-    private int elementsCounter = 0;
     private static int STEP = 100;
 }
