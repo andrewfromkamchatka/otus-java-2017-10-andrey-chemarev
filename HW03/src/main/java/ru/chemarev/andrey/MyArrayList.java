@@ -129,7 +129,11 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public T remove(int index) {
-        throw new NotImplementedException();
+        T result = get(index);
+        System.arraycopy(array, index+1, array, index, currentPosition-index-1);
+        array[currentPosition-1] = null;
+        currentPosition--;
+        return result;
     }
 
     @Override
