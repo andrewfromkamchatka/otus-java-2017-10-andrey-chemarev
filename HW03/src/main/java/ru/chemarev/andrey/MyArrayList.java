@@ -148,13 +148,13 @@ public class MyArrayList<T> implements List<T> {
     }
 
     private void bubbleSort(Comparator<? super T> c) {
-        for (int i = 0; i < array.length - 1; i++) {
+        for (int i = 0; i < currentPosition - 1; i++) {
             boolean isSorted = true;
 
             if ( array[i] == null )
                 continue;
 
-            for (int j = i + 1; j < array.length; j++) {
+            for (int j = i + 1; j < currentPosition; j++) {
 
                 if ( array[j] == null )
                     continue;
