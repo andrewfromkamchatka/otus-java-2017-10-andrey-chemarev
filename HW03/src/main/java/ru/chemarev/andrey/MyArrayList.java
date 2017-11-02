@@ -111,6 +111,9 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public T get(int index) {
+        if ( index > currentPosition )
+            throw new IndexOutOfBoundsException(String.format("Index (%d) is not in the list", index, size()));
+
         return (T) array[index];
     }
 
