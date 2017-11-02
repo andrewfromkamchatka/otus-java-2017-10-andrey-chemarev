@@ -59,7 +59,15 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public boolean remove(Object o) {
-        throw new NotImplementedException();
+        for ( int i = 0; i < currentPosition; i++)
+            if ( o.equals(array[i]) ) {
+                System.arraycopy(array, i+1, array, i, currentPosition-i-1);
+                array[currentPosition-1] = null;
+                elementsCounter--;
+                return true;
+            }
+
+        return false;
     }
 
     @Override
