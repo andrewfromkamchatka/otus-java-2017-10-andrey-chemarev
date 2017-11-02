@@ -60,9 +60,7 @@ public class MyArrayList<T> implements List<T> {
     public boolean remove(Object o) {
         for ( int i = 0; i < currentPosition; i++)
             if ( o.equals(array[i]) ) {
-                System.arraycopy(array, i+1, array, i, currentPosition-i-1);
-                array[currentPosition-1] = null;
-                currentPosition--;
+                deleteElementAndShiftArrayToLeft(i);
                 return true;
             }
 
@@ -130,9 +128,7 @@ public class MyArrayList<T> implements List<T> {
     @Override
     public T remove(int index) {
         T result = get(index);
-        System.arraycopy(array, index+1, array, index, currentPosition-index-1);
-        array[currentPosition-1] = null;
-        currentPosition--;
+        deleteElementAndShiftArrayToLeft(index);
         return result;
     }
 
@@ -159,6 +155,12 @@ public class MyArrayList<T> implements List<T> {
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
         throw new NotImplementedException();
+    }
+
+    private void deleteElementAndShiftArrayToLeft(int index) {
+        System.arraycopy(array, index+1, array, index, currentPosition-index-1);
+        array[currentPosition-1] = null;
+        currentPosition--;
     }
 
     private void bubbleSort(Comparator<? super T> c) {
