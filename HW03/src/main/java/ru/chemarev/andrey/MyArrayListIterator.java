@@ -47,7 +47,7 @@ class MyArrayListIterator<T> implements ListIterator<T> {
 
     @Override
     public void set(T t) {
-        myArrayList.add(t);
+        myArrayList.set(counter-1, t);
     }
 
     @Override
