@@ -2,7 +2,7 @@ package ru.chemarev.andrey;
 
 public class TestClass {
 
-    public TestClass(int number, int value) {
+    public TestClass(long number, long value) {
         this.number = number;
         this.value = value;
     }
@@ -12,16 +12,16 @@ public class TestClass {
         return String.format("Element %d, value = %d", number, value);
     }
 
-    public int getNumber() {
+    public long getNumber() {
         return number;
     }
 
-    public int getValue() {
+    public long getValue() {
         return value;
     }
 
 
-    private int number;
-    private int value;
+    private long number;
+    private long value;
 }
 
