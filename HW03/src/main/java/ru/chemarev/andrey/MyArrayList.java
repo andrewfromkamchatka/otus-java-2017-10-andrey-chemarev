@@ -117,7 +117,12 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public T set(int index, T element) {
-        throw new NotImplementedException();
+        if ( index >= currentPosition )
+            throw new IndexOutOfBoundsException(String.format("Index (%d) is not in the list", index, size()));
+
+        T result = (T) array[index];
+        array[index] = element;
+        return result;
     }
 
     @Override

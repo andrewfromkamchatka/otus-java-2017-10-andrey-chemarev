@@ -7,7 +7,8 @@ public class Main {
 
     public static void main(String[] args) {
         testAddAll(false);
-        testCopy(false);
+        testCopy(false, 8);
+        testCopy(false, 100);
         testSort(false);
     }
 
@@ -26,11 +27,11 @@ public class Main {
         System.out.println(String.format("Time of addAll() : %d ns", resultTime));
     }
 
-    public static void testCopy(boolean isShowOnScreen) {
+    public static void testCopy(boolean isShowOnScreen, int listSize) {
         MyArrayList<TestClass> myArrayList = new MyArrayList<>();
         MyArrayList<TestClass> myArrayList_2 = new MyArrayList<>();
 
-        for (int i = 0; i < 1000; i++) {
+        for (long i = 0; i < listSize*2; i++) {
             if ( i % 2 == 0 )
                 myArrayList.add(new TestClass(i, i));
             else
@@ -45,7 +46,7 @@ public class Main {
             for ( TestClass element : myArrayList_2 )
                 System.out.println(element);
 
-        System.out.println(String.format("Time of copy() : %d ns", resultTime));
+        System.out.println(String.format("Time of copy() for %d elements: %d ns", listSize, resultTime));
     }
 
     public static void testSort(boolean isShowOnScreen) {
