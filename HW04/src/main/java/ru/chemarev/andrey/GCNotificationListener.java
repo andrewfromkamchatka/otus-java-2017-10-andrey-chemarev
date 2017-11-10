@@ -7,34 +7,45 @@ import org.slf4j.LoggerFactory;
 import javax.management.Notification;
 import javax.management.NotificationListener;
 import javax.management.openmbean.CompositeData;
+import java.io.IOException;
 
 public class GCNotificationListener implements NotificationListener {
+
+    public GCNotificationListener(GcLogger gcLogger) {
+        this.gcLogger = gcLogger;
+    }
 
     public void handleNotification(Notification notification, Object handback) {
 
         if (notification.getType().equals(GarbageCollectionNotificationInfo.GARBAGE_COLLECTION_NOTIFICATION)) {
 
-            GarbageCollectionNotificationInfo info = GarbageCollectionNotificationInfo.from((CompositeData) notification.getUserData());
+            GarbageCollectionNotificationInfo info =
+                    GarbageCollectionNotificationInfo.from((CompositeData) notification.getUserData());
 
-            summaryTime += info.getGcInfo().getDuration();
-            collectionCount++;
+            if ( statistics == null ) {
+                String type;
+                if (info.getGcAction().equals("end of minor GC"))
+                    type = "Young";
+                else if (info.getGcAction().equals("end of major GC"))
+                    type = "Old";
+                else
+                    type = info.getGcAction();
 
-            log.info("observation; {}; {}; dur = {}; counts = {}; summary = {}; average/min = {}; fromLastGc = {}; endOfGc = {};",
-                    info.getGcAction(),
-                    info.getGcName(),
-                    info.getGcInfo().getDuration(),
-                    collectionCount,
-                    summaryTime,
-                    GCStatistics.calcAverageTimeImMinute(collectionCount, summaryTime, info.getGcInfo().getEndTime()),
-                    info.getGcInfo().getEndTime() - lastGcEndTime,
-                    info.getGcInfo().getEndTime());
+                statistics = new Statistics(type, info.getGcName());
+            }
 
-            lastGcEndTime = info.getGcInfo().getEndTime();
+            statistics.addMeasurement(info);
+
+            try {
+                gcLogger.log(statistics);
+            } catch (IOException e) {
+                log.error(e.getMessage());
+            }
+
         }
     }
 
-    private long summaryTime = 0;
-    private long collectionCount = 0;
-    private long lastGcEndTime = 0;
-    private static Logger log = LoggerFactory.getLogger(GCNotificationListener.class);
+    private GcLogger gcLogger;
+    private Statistics statistics;
+    private Logger log = LoggerFactory.getLogger(GCNotificationListener.class);
 }

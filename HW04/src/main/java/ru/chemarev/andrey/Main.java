@@ -16,39 +16,44 @@ import java.util.Map;
 /*
  -Xms512m
  -Xmx512m
-
- -XX:+UseSerialGC
- -XX:+UseParallelGC
- -XX:+UseParNewGC
-
- -XX:+UseParallelOldGC
- -XX:+UseConcMarkSweepGC
- -XX:+UseG1GC
  */
 public class Main {
 
     public static void main(String[] args) {
         log.info("HW04 started with pid = " + ManagementFactory.getRuntimeMXBean().getName());
 
-        printStatistics();
-        subscribeOnGCNotification();
-        benchmark();
+        try {
+            if (args.length == 1 && (args[0].equals("-s") || args[1].equals("--statistics")))
+                printStatistics(gcLogPath);
+            else if (args.length == 0) {
+                GcLogger gcLogger = new GcLogger(gcLogPath);
+
+                subscribeOnGCNotification(gcLogger);
+                benchmark();
+
+                gcLogger.close();
+            } else
+                log.error("Unknown arguments");
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
 
         log.info("Finished");
     }
 
-    public static void printStatistics() {
+    public static void printStatistics(Path gcLogPath) {
         try {
-            Path logFilePath = Paths.get("hw04.log");
-            Map<String, GCStatistics> statisticsMap = LogParser.parse(logFilePath);
+            Map<String, Statistics> statisticsMap = GcLogger.parse(gcLogPath);
 
-            String template = "\t%-5s \t %-25s \t %5d calls \t %5d ms/min \t %5d ms/call%n";
+            String template = "\t%-6s \t %-35s \t %5d calls \t %5d ms/min \t %5d ms/call%n";
             System.out.println("\n\t*** GC Statistics ***");
-            for (Map.Entry<String, GCStatistics> entry : statisticsMap.entrySet()) {
-                GCStatistics stat = entry.getValue();
+
+            for (Map.Entry<String, Statistics> entry : statisticsMap.entrySet()) {
+                Statistics stat = entry.getValue();
                 System.out.printf(template, stat.getType(), stat.getName(), stat.getCount(),
                         stat.getAverageTimeInMinute(), stat.getAverageTime());
             }
+
             System.out.println("\t*********************\n");
         } catch (IOException e) {
             log.error("Cannot read log file : {}", e.getMessage());
@@ -56,14 +61,15 @@ public class Main {
 
     }
 
-    public static void subscribeOnGCNotification() {
+    public static void subscribeOnGCNotification(GcLogger gcLogger) throws IOException {
         List<GarbageCollectorMXBean> gcBeans = ManagementFactory.getGarbageCollectorMXBeans();
 
         for (GarbageCollectorMXBean gcBean : gcBeans) {
             NotificationEmitter emitter = (NotificationEmitter) gcBean;
-            GCNotificationListener notificationListener = new GCNotificationListener();
+            GCNotificationListener notificationListener = new GCNotificationListener(gcLogger);
             emitter.addNotificationListener(notificationListener, null, null);
         }
+
     }
 
     public static void benchmark() {
@@ -78,11 +84,18 @@ public class Main {
                 String temp = new String("");
                 array[i] = temp;
 
-                if ( i % 31 == 0 ) list.add(temp);
+                if ( i % 101 == 0 ) list.add(temp); // -XX:+UseSerialGC
+//                if ( i % 503 == 0 ) list.add(temp); // -XX:+UseParallelGC -XX:+UseParallelOldGC
+//                if ( i % 23 == 0 ) list.add(temp); // -XX:+UseG1GC
+//                if ( i % 89 == 0 ) list.add(temp); // -XX:+UseParNewGC
+//                if ( i % 59 == 0 ) list.add(temp); // -XX:+UseConcMarkSweepGC -XX:+UseParNewGC
+//                if ( i % 41 == 0 ) list.add(temp); // -XX:+UseConcMarkSweepGC -XX:-UseParNewGC
+
             }
 
         }
     }
 
+    private static Path gcLogPath = Paths.get("gc-statistics.log");
     private static Logger log = LoggerFactory.getLogger(Main.class);
 }
