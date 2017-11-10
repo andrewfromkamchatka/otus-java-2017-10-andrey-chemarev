@@ -1,0 +1,29 @@
+	** GC Statistics -XX:+UseSerialGC ***
+	Young  	 Copy                                	   208 calls 	  8658 ms/min 	   124 ms/call
+	Old    	 MarkSweepCompact                    	   245 calls 	 39871 ms/min 	   976 ms/call
+	*********************
+	
+	*** GC Statistics -XX:+UseParallelGC -XX:+UseParallelOldGC ***
+	Young  	 PS Scavenge                         	  2777 calls 	 35106 ms/min 	    63 ms/call
+	Old    	 PS MarkSweep                        	     9 calls 	  4831 ms/min 	  2684 ms/call
+	*********************
+	
+	*** GC Statistics -XX:+UseG1GC ***
+	Young  	 G1 Young Generation                 	   367 calls 	 19193 ms/min 	   261 ms/call
+	Old    	 G1 Old Generation                   	    50 calls 	 19077 ms/min 	  1907 ms/call
+	*********************
+	
+	*** GC Statistics -XX:+UseParNewGC ***
+	Young  	 ParNew                              	   184 calls 	  7624 ms/min 	   124 ms/call
+	Old    	 MarkSweepCompact                    	   218 calls 	 44661 ms/min 	  1024 ms/call
+	*********************
+	
+	*** GC Statistics XX:+UseConcMarkSweepGC +XX:+UseParNewGC ***
+	Young  	 ParNew                              	   124 calls 	 12077 ms/min 	   292 ms/call
+	Old    	 ConcurrentMarkSweep                 	   146 calls 	 37755 ms/min 	  1551 ms/call
+	*********************
+	
+	*** GC Statistics XX:+UseConcMarkSweepGC -XX:-UseParNewGC ***
+	Young  	 Copy                                	   342 calls 	 14764 ms/min 	   259 ms/call
+	Old    	 ConcurrentMarkSweep                 	   100 calls 	 34681 ms/min 	  2080 ms/call
+	*********************
