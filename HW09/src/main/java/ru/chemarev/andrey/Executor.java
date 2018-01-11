@@ -2,8 +2,8 @@ package ru.chemarev.andrey;
 
 import ru.chemarev.andrey.core.DataSet;
 import ru.chemarev.andrey.core.TExecutor;
-import ru.chemarev.andrey.core.Table;
 
+import javax.persistence.Table;
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -45,13 +45,17 @@ public class Executor extends TExecutor {
 
         String query = String.format(INSERT_DATA_SET, table.name(), columnJoiner.toString(), valuesJoiner.toString());
 
-        execUpdate(query, statement -> {
+        int id = execUpdate(query, statement -> {
             int i = 1;
             for (Object value : values ) {
                 statement.setObject(i, value);
                 i++;
             }
         });
+
+        if ( id != -1 )
+            dateSet.setId(id);
+
     }
 
     <T extends DataSet> T load(long id, Class<T> clazz) throws SQLException {
