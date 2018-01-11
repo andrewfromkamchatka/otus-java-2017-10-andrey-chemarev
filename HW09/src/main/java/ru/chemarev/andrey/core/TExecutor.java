@@ -24,9 +24,21 @@ public class TExecutor {
     }
 
     public int execUpdate(String update, PreparatoryHandler handler) throws SQLException {
-        try (PreparedStatement stmt = connection.prepareStatement(update)) {
+        try (PreparedStatement stmt = connection.prepareStatement(update, Statement.RETURN_GENERATED_KEYS)) {
             handler.handle(stmt);
-            return stmt.executeUpdate();
+            stmt.executeUpdate();
+
+            ResultSet resultSet = stmt.getGeneratedKeys();
+
+            if ( resultSet.next() ) {
+                return resultSet.getInt(1);
+            } else {
+                return -1;
+            }
         }
+    }
+
+    public void close() throws SQLException {
+        connection.close();
     }
 }
