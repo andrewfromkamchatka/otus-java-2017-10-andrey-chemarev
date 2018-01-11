@@ -1,7 +1,7 @@
 package ru.chemarev.andrey;
 
 import ru.chemarev.andrey.core.DataSet;
-import ru.chemarev.andrey.core.Table;
+import javax.persistence.Table;
 
 @Table(name="\"User\"")
 public class UserDataSet extends DataSet {
