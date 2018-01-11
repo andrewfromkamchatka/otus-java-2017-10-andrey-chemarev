@@ -1,8 +1,7 @@
 package ru.chemarev.andrey;
 
-import ru.chemarev.andrey.core.ConnectionHelper;
+import ru.chemarev.andrey.core.DBService;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
 /*
@@ -20,19 +19,19 @@ public class Main {
     public static void main(String[] args) {
 
         try {
-            Connection connection = ConnectionHelper.getConnection();
-            Executor executor = new Executor(connection);
+            DBService dbService = new DBServiceImpl();
 
             UserDataSet user = new UserDataSet();
             user.setName("Andrew");
             user.setAge(29);
 
-            executor.save(user);
+            dbService.save(user);
+            System.out.println("Saved user: " + user);
 
-            UserDataSet userFromDB = executor.load(1, UserDataSet.class);
-            System.out.println(userFromDB);
+            UserDataSet userFromDB = dbService.read(1);
+            System.out.println("Read user: " + userFromDB);
 
-            connection.close();
+            dbService.shutdown();
         } catch (SQLException e) {
             e.printStackTrace();
         }
