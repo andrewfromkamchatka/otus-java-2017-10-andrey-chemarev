@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Statistics</title>
+    <link href="css/base.css" rel="stylesheet">
+    <link href="css/statistics.css" rel="stylesheet">
+</head>
+<body onload='setInterval(function(){refresh()}, ${refreshPeriod?c} ); setClientTime();'>
+<div class="wrapper">
+    <div class="greeting">
+        <span>Hello, ${login}!</span>
+    </div>
+
+    <div>
+        <table>
+            <caption>Cache statistics</caption>
+            <tr>
+                <td>Hit</td>
+                <td>${hitCount}</td>
+            </tr>
+            <tr>
+                <td>Miss</td>
+                <td>${missCount}</td>
+            </tr>
+        </table>
+    </div>
+
+    <script src="js/statistics.js" type="text/javascript"></script>
+</div>
+</body>
+</html>

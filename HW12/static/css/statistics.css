@@ -1,0 +1,15 @@
+.greeting {
+    margin: 10px auto;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table > caption {
+    white-space: nowrap;
+}
+
+table tr td {
+    border: 1px solid black;
+}
