@@ -1,6 +1,7 @@
 package ru.chemarev.andrey.jetty;
 
-import ru.chemarev.andrey.cache.CacheEngine;
+import ru.chemarev.andrey.cache.CacheEngineImpl;
+import ru.chemarev.andrey.core.UserDataSet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -12,10 +13,10 @@ public class StatisticsServlet extends HttpServlet {
 
     private static final String STATISTICS_PAGE_TEMPLATE = "statistics.html";
     private static final int REFRESH_PERIOD_MS = 5 * 1000;
-    private CacheEngine<Long, String> cache;
+    private CacheEngineImpl<Long, UserDataSet> cache;
 
-    public StatisticsServlet(CacheEngine<Long, String> stringCache) {
-        this.cache = stringCache;
+    public StatisticsServlet(CacheEngineImpl<Long, UserDataSet> cache) {
+        this.cache = cache;
     }
 
     private String getPage(String login, int refreshPeriod) throws IOException {
@@ -23,6 +24,11 @@ public class StatisticsServlet extends HttpServlet {
 
         pageVariables.put("login", login);
         pageVariables.put("refreshPeriod", refreshPeriod);
+
+        pageVariables.put("maxElements", cache.getMaxElements());
+        pageVariables.put("lifeTimeMs", cache.getLifeTimeMs());
+        pageVariables.put("idleTimeMs", cache.getIdleTimeMs());
+        pageVariables.put("isEternal", cache.isEternal());
 
         pageVariables.put("hitCount", cache.getHitCount());
         pageVariables.put("missCount", cache.getMissCount());
@@ -32,10 +38,14 @@ public class StatisticsServlet extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request, response);
+        processRequest(request, response);
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         String login = (String) session.getAttribute("login");
 
