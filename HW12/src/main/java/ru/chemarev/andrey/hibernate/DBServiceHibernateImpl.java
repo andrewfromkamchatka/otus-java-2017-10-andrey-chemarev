@@ -16,9 +16,19 @@ import java.util.function.Function;
 
 public class DBServiceHibernateImpl implements DBService {
     protected SessionFactory sessionFactory;
-    private CacheEngine<Long, UserDataSet> userCache = new CacheEngineImpl<>(10, 5000, 30000, false);
+    private CacheEngine<Long, UserDataSet> userCache;
 
     public DBServiceHibernateImpl() {
+        configureHibernate();
+        userCache = new CacheEngineImpl<>(10, 5000, 30000, false);
+    }
+
+    public DBServiceHibernateImpl(CacheEngine<Long, UserDataSet> userCache) {
+        configureHibernate();
+        this.userCache = userCache;
+    }
+
+    private void configureHibernate() {
         Configuration configuration = new Configuration();
 
         configuration.addAnnotatedClass(DataSet.class);
@@ -32,10 +42,10 @@ public class DBServiceHibernateImpl implements DBService {
         configuration.setProperty("hibernate.hbm2ddl.auto", "create");
         configuration.setProperty("hibernate.enable_lazy_load_no_trans", "true");
 
-        sessionFactory = createSessionFactory(configuration);
+        sessionFactory = configureHibernate(configuration);
     }
 
-    protected SessionFactory createSessionFactory(Configuration configuration) {
+    protected SessionFactory configureHibernate(Configuration configuration) {
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
         builder.applySettings(configuration.getProperties());
         ServiceRegistry serviceRegistry = builder.build();
@@ -93,4 +103,5 @@ public class DBServiceHibernateImpl implements DBService {
     public void close() throws Exception {
         shutdown();
     }
+
 }
