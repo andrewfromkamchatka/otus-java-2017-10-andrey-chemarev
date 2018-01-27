@@ -98,4 +98,20 @@ public class CacheEngineImpl<K, V> implements CacheEngine<K, V> {
     private boolean isT1BeforeT2(long t1, long t2) {
         return t1 < t2 + TIME_THRESHOLD_MS;
     }
+
+    public int getMaxElements() {
+        return maxElements;
+    }
+
+    public long getLifeTimeMs() {
+        return lifeTimeMs;
+    }
+
+    public long getIdleTimeMs() {
+        return idleTimeMs;
+    }
+
+    public boolean isEternal() {
+        return isEternal;
+    }
 }
