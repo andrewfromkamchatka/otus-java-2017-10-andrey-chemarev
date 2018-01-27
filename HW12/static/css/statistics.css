@@ -1,9 +1,6 @@
-.greeting {
-    margin: 10px auto;
-}
-
 table {
     border-collapse: collapse;
+    margin: 0 auto;
 }
 
 table > caption {
@@ -12,4 +9,8 @@ table > caption {
 
 table tr td {
     border: 1px solid black;
+}
+
+.wrapper div {
+    margin-bottom: 10px;
 }
