@@ -14,14 +14,37 @@
 
     <div>
         <table>
-            <caption>Cache statistics</caption>
+            <caption>UserDataSet cache parameters</caption>
+            <tr>
+                <td>Max Elements</td>
+                <td>${maxElements?c}</td>
+            </tr>
+            <tr>
+                <td>Life Time, ms</td>
+                <td>${lifeTimeMs?c}</td>
+            </tr>
+            <tr>
+                <td>Idle Time, ms</td>
+                <td>${idleTimeMs?c}</td>
+            </tr>
+            <tr>
+                <td>Is Eternal</td>
+                <td>${isEternal?c}</td>
+            </tr>
+
+        </table>
+    </div>
+
+    <div>
+        <table>
+            <caption>UserDataSet cache statistics</caption>
             <tr>
                 <td>Hit</td>
-                <td>${hitCount}</td>
+                <td>${hitCount?c}</td>
             </tr>
             <tr>
                 <td>Miss</td>
-                <td>${missCount}</td>
+                <td>${missCount?c}</td>
             </tr>
         </table>
     </div>
