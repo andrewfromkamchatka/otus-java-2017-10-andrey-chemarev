@@ -25,7 +25,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request, response);
+        response.getWriter().println(getPage(null, null));
     }
 
     @Override
@@ -40,7 +40,7 @@ public class LoginServlet extends HttpServlet {
                 saveToCookie(response, login);
                 saveToServlet(request, login);
                 saveToSession(request, login);
-                redirectToStatistics(request, response);
+                redirectToStatistics(response);
             } else {
                 message = WRONG_LOGIN_PASSWORD_MESSAGE;
             }
@@ -49,7 +49,7 @@ public class LoginServlet extends HttpServlet {
         response.getWriter().println(getPage(requestLogin, message));
     }
 
-    private void redirectToStatistics(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void redirectToStatistics(HttpServletResponse response) throws ServletException, IOException {
         response.sendRedirect("/statistics");
     }
 
