@@ -1,0 +1,16 @@
+table {
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+table > caption {
+    white-space: nowrap;
+}
+
+table tr td {
+    border: 1px solid black;
+}
+
+.wrapper div {
+    margin-bottom: 10px;
+}

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app>
+
+    <display-name>HW13</display-name>
+    <description>Homework 13</description>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:applicationContext.xml</param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>ru.chemarev.andrey.servlet.LoginServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>StatisticsServlet</servlet-name>
+        <servlet-class>ru.chemarev.andrey.servlet.StatisticsServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>StatisticsServlet</servlet-name>
+        <url-pattern>/statistics</url-pattern>
+    </servlet-mapping>
+
+</web-app>
